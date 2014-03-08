@@ -24,8 +24,8 @@ namespace BasicClient
 
             #region Connecting neurons
 
-            nn.AddConnection(new SimpleConnection(new List<INeuron>() { n1 }, new List<INeuron>() { n2, n3 }));
-            nn.AddConnection(new SimpleConnection(new List<INeuron>() { n3 }, new List<INeuron>() { n1 }));
+            nn.AddConnection(new SimpleConnection(n1, n3));
+            nn.AddConnection(new SimpleConnection(n3, n1));
 
             #endregion
 

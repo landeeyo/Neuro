@@ -27,11 +27,6 @@ namespace NeuroCore
             get { return _active; }
         }
 
-        public Tuple<int, int, int> GetLocation
-        {
-            get { return _location; }
-        }
-
         public void Input()
         {
             _potential++;
@@ -54,6 +49,11 @@ namespace NeuroCore
             {
                 return false;
             }
+        }
+
+        public Tuple<int, int, int> Location
+        {
+            get { return _location; }
         }
     }
 }

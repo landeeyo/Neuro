@@ -15,3 +15,15 @@ NeuroCore/BasicClient/obj/x86/Debug/BasicClient.csprojResolveAssemblyReference.c
 NeuroCore/BasicClient/obj/x86/Debug/BasicClient.exe
 NeuroCore/BasicClient/obj/x86/Debug/BasicClient.pdb
 NeuroCore/BasicClient/obj/x86/Debug/DesignTimeResolveAssemblyReferencesInput.cache
+NeuroCore/NeuroCore.Tests/bin/Debug/NeuroCore.dll
+NeuroCore/NeuroCore.Tests/bin/Debug/NeuroCore.pdb
+NeuroCore/NeuroCore.Tests/bin/Debug/NeuroCore.Tests.dll
+NeuroCore/NeuroCore.Tests/bin/Debug/NeuroCore.Tests.pdb
+NeuroCore/NeuroCore.Tests/bin/Debug/nunit.framework.dll
+NeuroCore/NeuroCore.Tests/bin/Debug/nunit.framework.xml
+NeuroCore/NeuroCore.Tests/bin/Debug/TestResult.xml
+NeuroCore/NeuroCore.Tests/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
+NeuroCore/NeuroCore.Tests/obj/Debug/NeuroCore.Tests.csproj.FileListAbsolute.txt
+NeuroCore/NeuroCore.Tests/obj/Debug/NeuroCore.Tests.csprojResolveAssemblyReference.cache
+NeuroCore/NeuroCore.Tests/obj/Debug/NeuroCore.Tests.dll
+NeuroCore/NeuroCore.Tests/obj/Debug/NeuroCore.Tests.pdb

@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeuroCore", "NeuroCore\Neur
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasicClient", "BasicClient\BasicClient.csproj", "{F0390836-6D68-4100-9254-73B0596F9FA9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeuroCore.Tests", "NeuroCore.Tests\NeuroCore.Tests.csproj", "{11F2E8B9-7FB1-409A-A4B5-5135774F6F42}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,16 @@ Global
 		{F0390836-6D68-4100-9254-73B0596F9FA9}.Release|Mixed Platforms.Build.0 = Release|x86
 		{F0390836-6D68-4100-9254-73B0596F9FA9}.Release|x86.ActiveCfg = Release|x86
 		{F0390836-6D68-4100-9254-73B0596F9FA9}.Release|x86.Build.0 = Release|x86
+		{11F2E8B9-7FB1-409A-A4B5-5135774F6F42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11F2E8B9-7FB1-409A-A4B5-5135774F6F42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11F2E8B9-7FB1-409A-A4B5-5135774F6F42}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{11F2E8B9-7FB1-409A-A4B5-5135774F6F42}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{11F2E8B9-7FB1-409A-A4B5-5135774F6F42}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{11F2E8B9-7FB1-409A-A4B5-5135774F6F42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11F2E8B9-7FB1-409A-A4B5-5135774F6F42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11F2E8B9-7FB1-409A-A4B5-5135774F6F42}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{11F2E8B9-7FB1-409A-A4B5-5135774F6F42}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{11F2E8B9-7FB1-409A-A4B5-5135774F6F42}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

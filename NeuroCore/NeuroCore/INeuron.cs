@@ -5,7 +5,7 @@ namespace NeuroCore
     public interface INeuron
     {
         bool IsActive { get; }
-        Tuple<int, int, int> GetLocation { get; }
+        Tuple<int, int, int> Location { get; }
         int ActivationThreshold { get; set; }
 
         void Input();

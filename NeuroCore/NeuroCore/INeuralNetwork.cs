@@ -1,4 +1,5 @@
 ﻿
+using System;
 namespace NeuroCore
 {
     public interface INeuralNetwork
@@ -10,5 +11,7 @@ namespace NeuroCore
 
         string PrintNeuronList();
         string PrintConnectionList();
+        bool IsConnection(Tuple<int, int, int> firstLocation, Tuple<int, int, int> secondLocation);
+        double GetDistance(Tuple<int, int, int> firstLocation, Tuple<int, int, int> secondLocation);
     }
 }
