@@ -40,7 +40,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IConnection.cs" />
+    <Compile Include="INeuralNetwork.cs" />
+    <Compile Include="INeuron.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SimpleConnection.cs" />
+    <Compile Include="SimpleNeuralNetwork.cs" />
+    <Compile Include="SimpleNeuron.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
