@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Collections;
-using System.IO;
 
 namespace NeuroCore
 {
     public class SimpleNeuron : INeuron
     {
         bool _active;
-        Tuple<int, int> _location;
+        Tuple<int, int, int> _location;
         int _potential;
         int _activationThreshold;
 
@@ -20,7 +15,7 @@ namespace NeuroCore
             set { _activationThreshold = value; }
         }
 
-        SimpleNeuron(Tuple<int,int> location)
+        public SimpleNeuron(Tuple<int,int, int> location)
         {
             _active = true;
             _potential = 0;
@@ -32,7 +27,7 @@ namespace NeuroCore
             get { return _active; }
         }
 
-        public Tuple<int, int> GetLocation
+        public Tuple<int, int, int> GetLocation
         {
             get { return _location; }
         }

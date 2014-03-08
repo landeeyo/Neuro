@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace NeuroCore
 {
+    [Serializable]
     public class SimpleNeuralNetwork : INeuralNetwork
     {
         List<INeuron> neurons;
         List<IConnection> connections;
 
-        SimpleNeuralNetwork()
+        public SimpleNeuralNetwork()
         {
             neurons = new List<INeuron>();
             connections = new List<IConnection>();

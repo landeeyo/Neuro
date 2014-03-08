@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
+using System;
 
 namespace NeuroCore
 {
@@ -12,6 +10,7 @@ namespace NeuroCore
         int GetRemainingRounds { get; }
         IList<INeuron> GetInputNeuronList { get; }
         IList<INeuron> GetOutputNeuronList { get; }
+        IList<Tuple<INeuron,INeuron, double>> GetDistances { get; }
         
         void AddInputNeuron(INeuron neuron);
         void DeleteInputNeuron(INeuron neuron);
