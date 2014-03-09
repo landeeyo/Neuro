@@ -9,8 +9,11 @@ namespace NeuroCore
         bool IsActive { get; }
         int GetRemainingRounds { get; }
         double GetDistance { get; }
+        int GetRoundDistance { get; }
         INeuron SourceNeuron { get; set; }
         INeuron DestinationNeuron { get; set; }
+        int MyelinationGrowthFactor { get; set; }
+        int MyelinationDeclineFactor { get; set; }
 
         void Fire();
         void Tick();
@@ -18,3 +21,4 @@ namespace NeuroCore
         string ConnectionDescription();
     }
 }
+

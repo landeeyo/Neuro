@@ -7,17 +7,78 @@ namespace NeuroCore
 {
     public class SimpleConnection : IConnection
     {
+        #region Data fields
+
         #region Log4Net
 
         private static readonly ILog logger = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         #endregion
-
         int _myelinationFactor;
         bool _active;
         int _remainingRounds;
         INeuron _sourceNeuron;
         INeuron _destinationNeuron;
+        int _myelinationGrowthFactor;
+        int _myelinationDeclineFactor;
+        readonly int _myelinationFactorPeak = 10000;
+
+        #endregion
+
+        #region Properties
+
+        public int GetMyelinationFactor
+        {
+            get { return _myelinationFactor; }
+        }
+
+        public int MyelinationGrowthFactor
+        {
+            get { return _myelinationGrowthFactor; }
+            set { _myelinationGrowthFactor = value; }
+        }
+
+        public bool IsActive
+        {
+            get { return _active; }
+        }
+
+        public int GetRemainingRounds
+        {
+            get { return _remainingRounds; }
+        }
+
+        public INeuron SourceNeuron
+        {
+            get { return _sourceNeuron; }
+            set { _sourceNeuron = value; }
+        }
+
+        public INeuron DestinationNeuron
+        {
+            get { return _destinationNeuron; }
+            set { _destinationNeuron = value; }
+        }
+
+        public int MyelinationDeclineFactor
+        {
+            get { return _myelinationDeclineFactor; }
+            set { _myelinationDeclineFactor = value; }
+        }
+
+        public double GetDistance
+        {
+            get { return CalculateDistance(SourceNeuron.Location, DestinationNeuron.Location); }
+        }
+
+        public int GetRoundDistance
+        {
+            get { return Convert.ToInt32((_myelinationFactorPeak / 10.0 * GetDistance) / _myelinationFactor); ; }
+        }
+
+        #endregion
+
+        #region Init
 
         public SimpleConnection()
         {
@@ -35,45 +96,9 @@ namespace NeuroCore
             _destinationNeuron = destinationNeuron;
         }
 
-        public int GetMyelinationFactor
-        {
-            get { return _myelinationFactor; }
-        }
+        #endregion
 
-        public bool IsActive
-        {
-            get { return _active; }
-        }
-
-        public int GetRemainingRounds
-        {
-            get { return _remainingRounds; }
-        }
-
-        private double CalculateDistance(Tuple<int, int, int> firstLocation, Tuple<int, int, int> secondlocation)
-        {
-            double deltaX = secondlocation.Item1 - firstLocation.Item1;
-            double deltaY = secondlocation.Item2 - firstLocation.Item2;
-            double deltaZ = secondlocation.Item3 - firstLocation.Item3;
-            return (double)Math.Sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ);
-        }
-
-        public double GetDistance
-        {
-            get { return CalculateDistance(SourceNeuron.Location, DestinationNeuron.Location); }
-        }
-
-        public INeuron SourceNeuron
-        {
-            get { return _sourceNeuron; }
-            set { _sourceNeuron = value; }
-        }
-
-        public INeuron DestinationNeuron
-        {
-            get { return _destinationNeuron; }
-            set { _destinationNeuron = value; }
-        }
+        #region Network related methods
 
         /// <summary>
         /// When neuron fires signal
@@ -83,8 +108,8 @@ namespace NeuroCore
             if (_active == false)
             {
                 _active = true;
-                _remainingRounds = Convert.ToInt32(10.0 * GetDistance / _myelinationFactor);
-                logger.Debug( "Connection " + ConnectionDescription() + " has been fired. Remaining rounds: " + _remainingRounds);
+                _remainingRounds = Convert.ToInt32((_myelinationFactorPeak / 10.0 * GetDistance) / _myelinationFactor);
+                logger.Debug("Connection " + ConnectionDescription() + " has been fired. Remaining rounds: " + _remainingRounds);
             }
         }
 
@@ -95,9 +120,9 @@ namespace NeuroCore
         {
             if (_active)
             {
-                if (_myelinationFactor < 10000)
+                if (_myelinationFactor + _myelinationGrowthFactor < _myelinationFactorPeak)
                 {
-                    _myelinationFactor += 100;
+                    _myelinationFactor += _myelinationGrowthFactor;
                 }
                 if (_remainingRounds == 0)
                 {
@@ -111,17 +136,9 @@ namespace NeuroCore
             }
             else
             {
-                //if (_myelinationFactor > 51)
-                //{
-                //    _myelinationFactor -= 50;
-                //}
-                //else if (_myelinationFactor > 1 && _myelinationFactor<51)
-                //{
-                //    _myelinationFactor = 1;
-                //}
-                if (_myelinationFactor > 2)
+                if (_myelinationFactor - _myelinationDeclineFactor >= 1)
                 {
-                    _myelinationFactor -= 1;
+                    _myelinationFactor -= _myelinationDeclineFactor;
                 }
             }
             logger.Debug("Connection " + ConnectionDescription() + " has been ticked");
@@ -129,6 +146,16 @@ namespace NeuroCore
             logger.Debug("Remaining rounds: " + _remainingRounds.ToString());
             logger.Debug("MyelinationFactor: " + _myelinationFactor.ToString());
         }
+
+        private double CalculateDistance(Tuple<int, int, int> firstLocation, Tuple<int, int, int> secondlocation)
+        {
+            double deltaX = secondlocation.Item1 - firstLocation.Item1;
+            double deltaY = secondlocation.Item2 - firstLocation.Item2;
+            double deltaZ = secondlocation.Item3 - firstLocation.Item3;
+            return (double)Math.Sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ);
+        }
+
+        #endregion
 
         #region Log methods
 

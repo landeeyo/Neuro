@@ -14,6 +14,13 @@ namespace NeuroCore
         bool IsConnection(Tuple<int, int, int> firstLocation, Tuple<int, int, int> secondLocation);
         double GetDistance(Tuple<int, int, int> firstLocation, Tuple<int, int, int> secondLocation);
 
+        int NeuronFireTreshold { get; set; }
+        int NeuronReactivationTimeFactor { get; set; }
+        int ConnectionMyelinationGrowthFactor { get; set; }
+        int ConnectionMyelinationDeclineFactor { get; set; }
+        long ActiveConnectionCount { get; }
+        long RoundsRemainingForActiveConnectionShutdown { get; }
+
         void Tick();
     }
 }

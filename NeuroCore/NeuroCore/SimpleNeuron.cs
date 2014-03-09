@@ -5,30 +5,45 @@ namespace NeuroCore
 {
     public class SimpleNeuron : INeuron
     {
+        #region Data fields
+
         #region Log4Net
 
         private static readonly ILog logger = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         #endregion
-
         bool _active;
         Tuple<int, int, int> _location;
         int _potential;
-        int _activationThreshold;
+        int _fireTreshold;
+        int _reactivationTimeFactor;
         int _roundsToActivation;
 
-        public int ActivationThreshold
+        #endregion
+
+        #region Properties
+
+        public int ReactivationTimeFactor
         {
-            get { return _activationThreshold; }
-            set { _activationThreshold = value; }
+            get { return _reactivationTimeFactor; }
+            set { _reactivationTimeFactor = value; }
         }
 
-        public SimpleNeuron(Tuple<int, int, int> location)
+        public int FireTreshold
         {
-            _active = true;
-            _potential = 0;
-            _location = location;
-            _activationThreshold = 25;
+            get { return _fireTreshold; }
+            set { _fireTreshold = value; }
+        }
+
+        public int RoundsToActivation
+        {
+            get { return _roundsToActivation; }
+            set { _roundsToActivation = value; }
+        }
+
+        public Tuple<int, int, int> Location
+        {
+            get { return _location; }
         }
 
         /// <summary>
@@ -39,12 +54,28 @@ namespace NeuroCore
             get { return _active; }
         }
 
+        #endregion
+
+        #region Init
+
+        public SimpleNeuron(Tuple<int, int, int> location)
+        {
+            _active = true;
+            _potential = 0;
+            _location = location;
+        }
+
+        #endregion
+
+        #region Network related methods
+
         /// <summary>
         /// Signal on input
         /// </summary>
         public void Input()
         {
             logger.Debug("Neuron [" + Location.Item1 + "," + Location.Item2 + "," + Location.Item3 + "] has new input.");
+            logger.Debug("potential: " + _potential);
             _potential++;
         }
 
@@ -64,14 +95,14 @@ namespace NeuroCore
             logger.Debug("Neuron [" + Location.Item1 + "," + Location.Item2 + "," + Location.Item3 + "] has been deactivated.");
             _potential = 0;
             _active = false;
-            _roundsToActivation = 10;
+            _roundsToActivation = _reactivationTimeFactor;
         }
 
         public bool IsOutput()
         {
             if (_active)
             {
-                if (_potential >= _activationThreshold)
+                if (_potential >= _fireTreshold)
                 {
                     logger.Debug("Neuron [" + Location.Item1 + "," + Location.Item2 + "," + Location.Item3 + "] has fired.");
                     Deactivate();
@@ -88,11 +119,6 @@ namespace NeuroCore
             }
         }
 
-        public Tuple<int, int, int> Location
-        {
-            get { return _location; }
-        }
-
         public void Tick()
         {
             if (_roundsToActivation > 1)
@@ -100,11 +126,9 @@ namespace NeuroCore
                 _roundsToActivation -= 1;
             }
             TryActivate();
-            //if (_active)
-            //{
-            //    IsOutput();
-            //}
             logger.Debug("Neuron [" + Location.Item1 + "," + Location.Item2 + "," + Location.Item3 + "] has been ticked.");
         }
+
+        #endregion
     }
 }

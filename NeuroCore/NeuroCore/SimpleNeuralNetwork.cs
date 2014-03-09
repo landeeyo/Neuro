@@ -8,6 +8,8 @@ namespace NeuroCore
 {
     public class SimpleNeuralNetwork : INeuralNetwork
     {
+        #region Data fields
+
         #region Log4Net
 
         private static readonly ILog logger = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
@@ -17,6 +19,14 @@ namespace NeuroCore
         List<INeuron> neurons;
         List<IConnection> connections;
         long tickCount;
+        int _neuronFireTreshold;
+        int _neuronReactivationTimeFactor;
+        int _connectionMyelinationGrowthFactor;
+        int _connectionMyelinationDeclineFactor;
+
+        #endregion
+
+        #region Init
 
         public SimpleNeuralNetwork()
         {
@@ -24,18 +34,32 @@ namespace NeuroCore
             neurons = new List<INeuron>();
             connections = new List<IConnection>();
             tickCount = 0;
+            #region Default settings
+
+            _neuronFireTreshold = 25;
+            _neuronReactivationTimeFactor = 5;
+            _connectionMyelinationGrowthFactor = 10;
+            _connectionMyelinationDeclineFactor = 1;
+
+            #endregion
         }
+
+        #endregion
+
+        #region Add and remove
 
         public void AddNeuron(INeuron neuron)
         {
             logger.Debug("Adding neuron");
             neurons.Add(neuron);
+            RefreshNeuronsSettings();
         }
 
         public void AddConnection(IConnection connection)
         {
             logger.Debug("Adding connection");
             connections.Add(connection);
+            RefreshConnectionsSettings();
         }
 
         public void RemoveNeuron(INeuron neuron)
@@ -50,12 +74,33 @@ namespace NeuroCore
             connections.Remove(connection);
         }
 
+        private void RefreshNeuronsSettings()
+        {
+            foreach (INeuron n in neurons)
+            {
+                n.FireTreshold = _neuronFireTreshold;
+                n.ReactivationTimeFactor = _neuronReactivationTimeFactor;
+            }
+        }
+
+        private void RefreshConnectionsSettings()
+        {
+            foreach (IConnection c in connections)
+            {
+                c.MyelinationGrowthFactor = _connectionMyelinationGrowthFactor;
+                c.MyelinationDeclineFactor = _connectionMyelinationDeclineFactor;
+            }
+        }
+
+        #endregion
+
+        #region Printing
+
         public string PrintNeuronList()
         {
             StringBuilder sb = new StringBuilder();
             foreach (INeuron neuron in neurons)
             {
-                //sb.AppendLine(neuron.GetHashCode().ToString());
                 sb.AppendLine("loc: [" + neuron.Location.Item1 + "," + neuron.Location.Item2 + "," + neuron.Location.Item3 + "]");
                 sb.AppendLine("");
             }
@@ -67,13 +112,105 @@ namespace NeuroCore
             StringBuilder sb = new StringBuilder();
             foreach (IConnection connection in connections)
             {
-                //sb.AppendLine(connection.GetHashCode().ToString());
                 sb.AppendLine(connection.ConnectionDescription());
                 sb.AppendLine("mf: " + connection.GetMyelinationFactor.ToString());
                 sb.AppendLine("dist: " + connection.GetDistance.ToString());
-                sb.Append("");
+                sb.AppendLine("round dist: " + connection.GetRoundDistance.ToString());
+                sb.AppendLine("");
             }
+            sb.AppendLine("Active connections: " + ActiveConnectionCount);
+            sb.AppendLine("Rounds to connections shutdown: " + RoundsRemainingForActiveConnectionShutdown);
             return sb.ToString();
+        }
+
+        #endregion
+
+        #region Settings
+
+        public int NeuronFireTreshold
+        {
+            get { return _neuronFireTreshold; }
+            set
+            {
+                _neuronFireTreshold = value;
+                foreach (INeuron n in neurons)
+                {
+                    n.FireTreshold = value;
+                }
+            }
+        }
+
+        public int NeuronReactivationTimeFactor
+        {
+            get { return _neuronReactivationTimeFactor; }
+            set
+            {
+                _neuronReactivationTimeFactor = value;
+                foreach (INeuron n in neurons)
+                {
+                    n.ReactivationTimeFactor = value;
+                }
+            }
+        }
+
+        public int ConnectionMyelinationGrowthFactor
+        {
+            get { return _connectionMyelinationGrowthFactor; }
+            set
+            {
+                _connectionMyelinationGrowthFactor = value;
+                foreach (IConnection c in connections)
+                {
+                    c.MyelinationGrowthFactor = value;
+                }
+            }
+        }
+
+        public int ConnectionMyelinationDeclineFactor
+        {
+            get { return _connectionMyelinationDeclineFactor; }
+            set
+            {
+                _connectionMyelinationDeclineFactor = value;
+                foreach (IConnection c in connections)
+                {
+                    c.MyelinationDeclineFactor = value;
+                }
+            }
+        }
+
+        #endregion
+
+        public long ActiveConnectionCount
+        {
+            get
+            {
+                long activeConnectionCount = 0;
+                foreach (IConnection c in connections)
+                {
+                    if (c.IsActive)
+                    {
+                        activeConnectionCount++;
+                    }
+                }
+                return activeConnectionCount;
+            }
+        }
+
+        public long RoundsRemainingForActiveConnectionShutdown
+        {
+            get
+            {
+                long roundsRemainingForActiveConnectionShutdown = 0;
+                foreach (IConnection c in connections)
+                {
+                    if (c.IsActive)
+                    {
+                        roundsRemainingForActiveConnectionShutdown += c.GetRemainingRounds;
+                    }
+                }
+                return roundsRemainingForActiveConnectionShutdown;
+            }
         }
 
         public bool IsConnection(Tuple<int, int, int> firstLocation, Tuple<int, int, int> secondLocation)
