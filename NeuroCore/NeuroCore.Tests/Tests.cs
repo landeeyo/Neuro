@@ -8,7 +8,8 @@ namespace NeuroCore.Tests
     public class DistanceTest
     {
         INeuralNetwork nn;
-        SimpleNeuron n1, n2, n3, n4;
+        SimpleNeuron n1, n2;
+        IConnection c1;
 
         [SetUp]
         public void Setup()
@@ -37,13 +38,22 @@ namespace NeuroCore.Tests
 
             #region Connecting neurons
 
-            nn.AddConnection(new SimpleConnection(n1, n2));
+            c1 = new SimpleConnection(n1, n2);
+            nn.AddConnection(c1);
 
             #endregion
 
             double result = nn.GetDistance(n1.Location, n2.Location);
             double properResult = 15.5884;
             Assert.AreEqual(properResult, result, 0.4);
+
+            #region Cleanup
+
+            nn.RemoveNeuron(n1);
+            nn.RemoveNeuron(n2);
+            nn.RemoveConnection(c1);
+
+            #endregion
         }
 
         [Test]
@@ -51,23 +61,32 @@ namespace NeuroCore.Tests
         {
             #region Adding neurons
 
-            n3 = new SimpleNeuron(new Tuple<int, int, int>(5, 10, 2));
-            n4 = new SimpleNeuron(new Tuple<int, int, int>(13, 9, 27));
+            n1 = new SimpleNeuron(new Tuple<int, int, int>(5, 10, 2));
+            n2 = new SimpleNeuron(new Tuple<int, int, int>(13, 9, 27));
 
-            nn.AddNeuron(n3);
-            nn.AddNeuron(n4);
+            nn.AddNeuron(n1);
+            nn.AddNeuron(n2);
 
             #endregion
 
             #region Connecting neurons
 
-            nn.AddConnection(new SimpleConnection(n3, n4));
+            c1 = new SimpleConnection(n1, n2);
+            nn.AddConnection(c1);
 
             #endregion
 
-            double result = nn.GetDistance(n3.Location, n4.Location);
+            double result = nn.GetDistance(n1.Location, n2.Location);
             double properResult = 26.2678;
             Assert.AreEqual(properResult, result, 0.4);
+
+            #region Cleanup
+
+            nn.RemoveNeuron(n1);
+            nn.RemoveNeuron(n2);
+            nn.RemoveConnection(c1);
+
+            #endregion
         }
     }
 }

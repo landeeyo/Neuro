@@ -2,38 +2,51 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using log4net;
 
 namespace NeuroCore
 {
-    [Serializable]
     public class SimpleNeuralNetwork : INeuralNetwork
     {
+        #region Log4Net
+
+        private static readonly ILog logger = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+        #endregion
+
         List<INeuron> neurons;
         List<IConnection> connections;
+        long tickCount;
 
         public SimpleNeuralNetwork()
         {
+            logger.Debug("Initializing neural network [" + this.GetHashCode().ToString() + "]");
             neurons = new List<INeuron>();
             connections = new List<IConnection>();
+            tickCount = 0;
         }
 
         public void AddNeuron(INeuron neuron)
         {
+            logger.Debug("Adding neuron");
             neurons.Add(neuron);
         }
 
         public void AddConnection(IConnection connection)
         {
+            logger.Debug("Adding connection");
             connections.Add(connection);
         }
 
-        public void DeleteNeuron(INeuron neuron)
+        public void RemoveNeuron(INeuron neuron)
         {
+            logger.Debug("Removing neuron");
             neurons.Remove(neuron);
         }
 
-        public void DeleteConnection(IConnection connection)
+        public void RemoveConnection(IConnection connection)
         {
+            logger.Debug("Removing connection");
             connections.Remove(connection);
         }
 
@@ -42,7 +55,9 @@ namespace NeuroCore
             StringBuilder sb = new StringBuilder();
             foreach (INeuron neuron in neurons)
             {
-                sb.AppendLine(neuron.GetHashCode().ToString());
+                //sb.AppendLine(neuron.GetHashCode().ToString());
+                sb.AppendLine("loc: [" + neuron.Location.Item1 + "," + neuron.Location.Item2 + "," + neuron.Location.Item3 + "]");
+                sb.AppendLine("");
             }
             return sb.ToString();
         }
@@ -52,7 +67,11 @@ namespace NeuroCore
             StringBuilder sb = new StringBuilder();
             foreach (IConnection connection in connections)
             {
-                sb.AppendLine(connection.GetHashCode().ToString());
+                //sb.AppendLine(connection.GetHashCode().ToString());
+                sb.AppendLine(connection.ConnectionDescription());
+                sb.AppendLine("mf: " + connection.GetMyelinationFactor.ToString());
+                sb.AppendLine("dist: " + connection.GetDistance.ToString());
+                sb.Append("");
             }
             return sb.ToString();
         }
@@ -82,6 +101,30 @@ namespace NeuroCore
             {
                 return -1.0;
             }
+        }
+
+        public void Tick()
+        {
+            logger.Debug("Ticking network");
+            IList<INeuron> firedNeurons = new List<INeuron>();
+            foreach (INeuron n in neurons)
+            {
+                n.Tick();
+                if (n.IsOutput())
+                {
+                    firedNeurons.Add(n);
+                }
+            }
+            foreach (IConnection c in connections)
+            {
+                if (firedNeurons.Contains(c.SourceNeuron))
+                {
+                    c.Fire();
+                }
+                c.Tick();
+            }
+            tickCount++;
+            logger.Debug("Network has been ticked (tick no. " + tickCount + ")");
         }
     }
 }

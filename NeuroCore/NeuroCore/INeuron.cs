@@ -11,5 +11,7 @@ namespace NeuroCore
         void Input();
         void Deactivate();
         bool IsOutput();
+
+        void Tick();
     }
 }

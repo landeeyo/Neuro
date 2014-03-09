@@ -11,5 +11,10 @@ namespace NeuroCore
         double GetDistance { get; }
         INeuron SourceNeuron { get; set; }
         INeuron DestinationNeuron { get; set; }
+
+        void Fire();
+        void Tick();
+
+        string ConnectionDescription();
     }
 }

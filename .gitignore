@@ -27,3 +27,17 @@ NeuroCore/NeuroCore.Tests/obj/Debug/NeuroCore.Tests.csproj.FileListAbsolute.txt
 NeuroCore/NeuroCore.Tests/obj/Debug/NeuroCore.Tests.csprojResolveAssemblyReference.cache
 NeuroCore/NeuroCore.Tests/obj/Debug/NeuroCore.Tests.dll
 NeuroCore/NeuroCore.Tests/obj/Debug/NeuroCore.Tests.pdb
+NeuroCore/BasicClient/bin/Debug/BasicClient.exe.config
+NeuroCore/BasicClient/bin/Debug/BasicClient.vshost.exe.config
+NeuroCore/BasicClient/bin/Debug/log-file.old.txt
+NeuroCore/BasicClient/bin/Debug/log-file.txt
+NeuroCore/BasicClient/bin/Debug/Log4Net.config
+NeuroCore/BasicClient/bin/Debug/log4net.dll
+NeuroCore/BasicClient/bin/Debug/log4net.xml
+NeuroCore/NeuroCore/bin/Debug/Log4Net.config
+NeuroCore/NeuroCore/bin/Debug/log4net.dll
+NeuroCore/NeuroCore/bin/Debug/log4net.xml
+NeuroCore/NeuroCore.Tests/bin/Debug/Log4Net.config
+NeuroCore/NeuroCore.Tests/bin/Debug/log4net.dll
+NeuroCore/NeuroCore.Tests/bin/Debug/log4net.xml
+NeuroCore/NeuroCore/obj/Debug/NeuroCore.csprojResolveAssemblyReference.cache
